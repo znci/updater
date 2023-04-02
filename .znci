@@ -5,3 +5,4 @@ DESCRIPTION="An easy to use, customizable ExpressJS web server."
 PROJECT_LEAD="zNotChill"
 CONTRIBUTORS=["zNotChill"]
 INTERNAL_VERSION=1
+PRIVATE=0

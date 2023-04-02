@@ -45,20 +45,18 @@ function getDataAsObject(data) {
     let [key, ...value] = line.split("=");
     value = value.join("=");
 
-    if(key === "PRIVATE" && value === 0) {
-      if (value.trim() === "") return; // ignore lines without a value
+    if (value.trim() === "") return; // ignore lines without a value
 
-      if (value.startsWith("[") && value.endsWith("]")) {
-        value = parseValueAsArray(value);
-      } else if (isValidNumber(value)) {
-        value = Number(value);
-      } else if (value.startsWith('"') && value.endsWith('"')) {
-        value = parseValueAsString(value);
-      } else {
-        throw new InformationFileSyntaxException(
-          `Value for key with identifier '${key}' malformed.`
-        );
-      }
+    if (value.startsWith("[") && value.endsWith("]")) {
+      value = parseValueAsArray(value);
+    } else if (isValidNumber(value)) {
+      value = Number(value);
+    } else if (value.startsWith('"') && value.endsWith('"')) {
+      value = parseValueAsString(value);
+    } else {
+      throw new InformationFileSyntaxException(
+        `Value for key with identifier '${key}' malformed.`
+      );
     }
 
     obj[key] = value;
@@ -93,7 +91,9 @@ function cache() {
         let obj = await getDataAsObject(data);
 
         if (obj) {
-          cached.push(obj);
+          if(parseInt(obj["PRIVATE"]) === 0) {
+            cached.push(obj);
+          }
         }
 
       }
@@ -109,4 +109,4 @@ cache();
 setInterval(() => {
   cached = [];
   cache();
-}, 30000);
+}, 60000);
