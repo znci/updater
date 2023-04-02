@@ -13,6 +13,7 @@ Useless for now.
 NAME="project name"
 DESCRIPTION="project description
 VERSION="v.1.0.0"
+PRIVATE=0
 
 PROJECT_LEAD="project lead username"
 CONTRIBUTORS=["contributor 1", "contributor 2"]
@@ -25,6 +26,8 @@ INTERNAL_VERSION=1
 `DESCRIPTION` - Short description of what the project does
 
 `VERSION` - Semantic version of the project
+
+`PRIVATE` - 1 if the repository is private, 0 if it isn't
 
 `PROJECT_LEAD` - GitHub username of the project lead responsible
 
