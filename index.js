@@ -7,6 +7,10 @@ class InformationFileSyntaxException extends Error {
   }
 }
 
+function isValidNumber(value) {
+  return Number.isInteger(Number(value));
+}
+
 function parseValueAsArray(value) {
   value = value.substring(1, value.length - 1); // remove brackets
   value = value.split(",").map((v) => v.trim()); // split by comma and trim whitespace
@@ -26,10 +30,6 @@ function parseValueAsArray(value) {
 
 function parseValueAsString(value) {
   return value.substring(1, value.length - 1);
-}
-
-function isValidNumber(value) {
-  return Number.isInteger(Number(value));
 }
 
 function getDataAsObject(data) {
