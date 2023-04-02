@@ -45,18 +45,20 @@ function getDataAsObject(data) {
     let [key, ...value] = line.split("=");
     value = value.join("=");
 
-    if (value.trim() === "") return; // ignore lines without a value
+    if(key === "PRIVATE" && value === 0) {
+      if (value.trim() === "") return; // ignore lines without a value
 
-    if (value.startsWith("[") && value.endsWith("]")) {
-      value = parseValueAsArray(value);
-    } else if (isValidNumber(value)) {
-      value = Number(value);
-    } else if (value.startsWith('"') && value.endsWith('"')) {
-      value = parseValueAsString(value);
-    } else {
-      throw new InformationFileSyntaxException(
-        `Value for key with identifier '${key}' malformed.`
-      );
+      if (value.startsWith("[") && value.endsWith("]")) {
+        value = parseValueAsArray(value);
+      } else if (isValidNumber(value)) {
+        value = Number(value);
+      } else if (value.startsWith('"') && value.endsWith('"')) {
+        value = parseValueAsString(value);
+      } else {
+        throw new InformationFileSyntaxException(
+          `Value for key with identifier '${key}' malformed.`
+        );
+      }
     }
 
     obj[key] = value;

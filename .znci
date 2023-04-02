@@ -4,3 +4,4 @@ DESCRIPTION="Updater library for .znci files"
 PROJECT_LEAD="zNotChill"
 CONTRIBUTORS=["zNotChill", "cerqiest"]
 INTERNAL_VERSION=1
+PRIVATE=1
