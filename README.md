@@ -11,7 +11,7 @@ Useless for now.
 ## Example
 ```
 NAME="project name"
-DESCRIPTION="project description
+DESCRIPTION="project description"
 VERSION="v.1.0.0"
 PRIVATE=0
 
