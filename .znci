@@ -1,15 +1,7 @@
-NAME="updater"
-DESCRIPTION="Updater library for .znci files"
+VERSION="v1.0.0"
+NAME="kelp"
+DESCRIPTION="An easy to use, customizable ExpressJS web server."
 
 PROJECT_LEAD="zNotChill"
-CONTRIBUTORS=["zNotChill", "cerqiest"]
+CONTRIBUTORS=["zNotChill"]
 INTERNAL_VERSION=1
-PRIVATE=1
-
-PROJECT_LEAD="zNotChill"
-CONTRIBUTORS=["zNotChill", "cerqiest"]
-INTERNAL_VERSION=1
-PROJECT_LEAD="zNotChill"
-CONTRIBUTORS=["zNotChill", "cerqiest"]
-INTERNAL_VERSION=1
-PRIVATE=1

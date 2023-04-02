@@ -15,6 +15,7 @@ VERSION="v.1.0.0"
 PROJECT_LEAD="project lead username"
 CONTRIBUTORS=["contributor 1", "contributor 2"]
 INTERNAL_VERSION=1
+PRIVATE=0
 
 Keys
 
