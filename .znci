@@ -1,0 +1,6 @@
+NAME="updater"
+DESCRIPTION="Updater library for .znci files"
+
+PROJECT_LEAD="zNotChill"
+CONTRIBUTORS=["zNotChill", "cerqiest"]
+INTERNAL_VERSION=1
