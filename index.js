@@ -7,6 +7,31 @@ class InformationFileSyntaxException extends Error {
   }
 }
 
+function parseValueAsArray(value) {
+  value = value.substring(1, value.length - 1); // remove brackets
+  value = value.split(",").map((v) => v.trim()); // split by comma and trim whitespace
+
+  if (value.some((v) => v.startsWith('"') && v.endsWith('"'))) {
+    value = value.map((v) => v.substring(1, v.length - 1)); // remove quotes
+  } else if (value.some((v) => isValidNumber(v))) {
+    value = value.map((v) => Number(v)); // convert to numbers
+  } else {
+    throw new InformationFileSyntaxException(
+      `Array value for key with identifier '${key}' malformed.`
+    );
+  }
+
+  return value;
+}
+
+function parseValueAsString(value) {
+  return value.substring(1, value.length - 1);
+}
+
+function isValidNumber(value) {
+  return Number.isInteger(Number(value));
+}
+
 function getDataAsObject(data) {
   let lines = data.split("\n");
   let obj = {};
@@ -19,15 +44,19 @@ function getDataAsObject(data) {
     let [key, ...value] = line.split("=");
     value = value.join("=");
 
-    if (!value.startsWith('"') || !value.endsWith('"')) {
-      throw new InformationFileSyntaxException(
-        `Value for key with identifier '${key}' is not a valid string (missing quotes at beginning or end).`
-      );
-    }
+    if (value.trim() === "") return; // ignore lines without a value
 
-    if (value.length < 2) {
+    console.log(`Key: ${key}, Value: ${value}`);
+
+    if (value.startsWith("[") && value.endsWith("]")) {
+      value = parseValueAsArray(value);
+    } else if (isValidNumber(value)) {
+      value = Number(value);
+    } else if (value.startsWith('"') && value.endsWith('"')) {
+      value = parseValueAsString(value);
+    } else {
       throw new InformationFileSyntaxException(
-        `Key with identifier '${key}' has no recognized value.`
+        `Value for key with identifier '${key}' malformed.`
       );
     }
 
