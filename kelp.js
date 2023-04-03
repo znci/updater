@@ -10,6 +10,8 @@ let options,
   routes = [];
 let PORT;
 let kelp = {};
+let uptime = 0;
+let startup = Date.now();
 
 /*
 	UTILS
@@ -19,16 +21,16 @@ kelp.throwErr = (e) => {
   const errors = [
     {
       err: "INVALID_PORT",
-      msg: "The port you specified is invalid. Please specify a valid port as an integer.",
+      msg: "The port you specified is invalid. Please specify a valid port as an integer."
     },
     {
       err: "INVALID_SETTINGS",
-      msg: "The settings you specified are invalid. Please specify valid settings as an object.",
+      msg: "The settings you specified are invalid. Please specify valid settings as an object."
     },
     {
       err: "INVALID_ROUTE",
-      msg: "The route you specified is invalid. Please specify a valid route as a string path.",
-    },
+      msg: "The route you specified is invalid. Please specify a valid route as a string path."
+    }
   ];
 
   let err = errors.find((v) => v.err == e);
@@ -84,6 +86,10 @@ kelp.settings = (settings) => {
         case "ejs":
           options.push("ejs");
           app.set("view engine", "ejs");
+          break;
+        case "pug":
+          options.push("pug");
+          app.set("view engine", "pug");
           break;
         case "public":
           options.push("public");
@@ -143,6 +149,9 @@ kelp.readRoutes = (subdir) => {
       if (!kelp.isValidMethod(routeData.method))
         return kelp.throwErr("INVALID_ROUTE");
 
+      if (options.IS_DEV_MODE && routeData.flags.devRoute) return;
+      if (routeData.flags && routeData.flags.disabled) return;
+
       app.all(routeData.path, (req, res) => {
         if (req.method === routeData.method) {
           routeData.handler(req, res);
@@ -168,7 +177,24 @@ kelp.readRoutes = (subdir) => {
 kelp.listen = () => {
   const { colorPrim, colorSec, spaces } = kelp;
 
+  app.all("/heartbeat", (req, res) => {
+    if (req.method === "GET") {
+      res.status(200).json({
+        uptime: uptime,
+        startup: startup,
+        status: "OK"
+      });
+    } else {
+      res
+        .status(405)
+        .send("The method <b>GET</b> is not allowed for this route.");
+    }
+  });
+
   app.listen(PORT, async () => {
+    setInterval(() => {
+      uptime++;
+    }, 1000);
     console.log(
       `${colorPrim("KELP")} ${colorSec("Listening on PORT")} ${colorPrim(PORT)}`
     );

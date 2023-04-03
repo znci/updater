@@ -68,6 +68,9 @@ function getDataAsObject(data) {
 // Backend
 
 const { kelp } = require("./kelp");
+const { client } = require("./bot");
+const { EmbedBuilder } = require("discord.js");
+require("./bot");
 
 kelp.settings({
   PORT: 9102,
@@ -76,14 +79,22 @@ kelp.settings({
 
 kelp.listen();
 
-var cached = [];
+var cached = {
+  total: 0,
+  repos: [],
+};
 function cache() {
-  fetch("https://api.github.com/users/znci/repos?token=" + process.env.GITHUB_TOKEN)
+  fetch("https://api.github.com/users/znci/repos", {
+    headers: {
+      Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+    }
+  })
   .then((res) => res.json())
-  .then((json) => {
+  .then(async (json) => {
+    
     json.forEach(async (element) => {
       let request = await fetch(
-        `https://raw.githubusercontent.com/znci/${element.name}/main/.znci`
+        `https://raw.githubusercontent.com/znci/${element.name}/${element.default_branch}/.znci`
       );
 
       if (request.status === 200) {
@@ -92,21 +103,43 @@ function cache() {
 
         if (obj) {
           if(parseInt(obj["PRIVATE"]) === 0) {
-            cached.push(obj);
+            cached['repos'].push(obj);
+            cached['total'] = cached['repos'].length;
           }
         }
-
       }
     });
-    console.log(cached);
   });
 };
+function getCached() {
+  return cached;
+}
 
-exports.cache = cache;
-exports.cached = cached;
 
 cache();
 setInterval(() => {
-  cached = [];
+  cached = {
+    total: 0,
+    repos: [],
+  };
   cache();
-}, 60000);
+}, 60000)
+client.on("ready", async () => {
+  setInterval(async () => {
+    const channel = await client.channels.fetch("1086624387614113883");
+    let embed = new EmbedBuilder()
+      .setTitle("Update")
+      .setDescription(`Running a cache update - Total cached: ${cached['total']}`)
+      .setColor("#afef76")
+      .addFields(
+        { name: "Online Services", value: `${cached['repos'].map(v => v['NAME']).join(", ")}`}
+      )
+      .setTimestamp();
+  
+    channel.send({ embeds: [embed] });
+  }, 120000);
+})
+
+exports.cache = cache;
+exports.cached = cached;
+exports.getCached = getCached;
