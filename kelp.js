@@ -149,7 +149,7 @@ kelp.readRoutes = (subdir) => {
       if (!kelp.isValidMethod(routeData.method))
         return kelp.throwErr("INVALID_ROUTE");
 
-      if (options.IS_DEV_MODE && routeData.flags.devRoute) return;
+      if (options.IS_DEV_MODE && routeData.flags && routeData.flags.devRoute) return;
       if (routeData.flags && routeData.flags.disabled) return;
 
       app.all(routeData.path, (req, res) => {
