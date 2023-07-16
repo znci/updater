@@ -1,6 +1,6 @@
 VERSION="v1.0.0"
-NAME="kelp"
-DESCRIPTION="An easy to use, customizable ExpressJS web server."
+NAME="updater"
+DESCRIPTION="znci internal tracker"
 
 PROJECT_LEAD="zNotChill"
 CONTRIBUTORS=["zNotChill"]

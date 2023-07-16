@@ -30,7 +30,7 @@ module.exports = {
 				projectLead = "None";
 			}
 			embed.addFields(
-				{ name: `<:squareannouncement:1011624886747275344> ${v['NAME']} *(${version})*`, value: `${v['DESCRIPTION']}\n\n**Contributors**\n${contributors}\n\n**Project Lead**\n${projectLead}`, inline: true}
+				{ name: `<:blankettea:1093611773111828510> ${v['NAME']} *(${version})*`, value: `${v['DESCRIPTION']}\n\n**Contributors**\n${contributors}\n\n**Project Lead**\n${projectLead}`, inline: true}
 			);
 		})
 		interaction.reply({ embeds: [embed] })
